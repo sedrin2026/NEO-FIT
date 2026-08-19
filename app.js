@@ -53,10 +53,8 @@ function hideGuide() {
 function calculatePersonalMenu() {
     saveUserDataToStorage();
 
-    const gender = document.getElementById('user-gender').value;
-    const age = Number(document.getElementById('user-age').value);
-    const height = Number(document.getElementById('user-height').value) / 100;
     const weight = Number(document.getElementById('user-weight').value);
+    const height = Number(document.getElementById('user-height').value) / 100;
     const bp = document.getElementById('user-bp').value;
     const maxWeight = Number(document.getElementById('user-max-weight').value) || 0;
 
@@ -109,7 +107,7 @@ function calculatePersonalMenu() {
             <ul style="font-size:0.85rem; color:#e2e8f0; padding-left:18px; margin-top:8px; line-height:1.5;">
                 <li><strong>部位別アドバイス:</strong> RPE 9の維持とネガティブ動作の徹底。マンネリ防止にアイソメトリック種目を追加。</li>
                 <li><strong>推奨プロテイン:</strong> グルタミン配合ホエイアイソレート ＋ クレアチンモノハイドレート併用。</li>
-                <li><strong>摂取量・詳細:</strong> 高強度セッションに対応するため 1日 <strong>${proteinGramsAdv}g</strong>（体重×2.2g）。BCAAをワークショップ中こまめに摂取し筋分解を完全抑制。</li>
+                <li><strong>摂取量・詳細:</strong> 高強度セッションに対応するため 1日 <strong>${proteinGramsAdv}g</strong>（体重×2.2g）。BCAAをワークアウト中こまめに摂取し筋分解を完全抑制。</li>
             </ul>
         `;
     }
@@ -167,15 +165,25 @@ function updateChart() {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     
-    const labels = workoutData.slice(-5).map(item => `${item.date} (${item.exercise})`);
-    const weights = workoutData.slice(-5).map(item => item.weight);
+    const filterPart = document.getElementById('filter-part').value;
+    const filterExercise = document.getElementById('filter-exercise').value;
+
+    // 条件に合致するデータだけに絞り込み
+    const filteredData = workoutData.filter(item => {
+        const matchPart = (filterPart === 'ALL' || item.part === filterPart);
+        const matchExercise = (filterExercise === 'ALL' || item.exercise === filterExercise);
+        return matchPart && matchExercise;
+    });
+
+    const labels = filteredData.slice(-10).map(item => `${item.date} (${item.exercise})`);
+    const weights = filteredData.slice(-10).map(item => item.weight);
 
     if (myChart) myChart.destroy();
 
     myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: labels.length > 0 ? labels : ['データなし'],
+            labels: labels.length > 0 ? labels : ['該当データなし'],
             datasets: [{
                 label: '挙上重量 (kg)',
                 data: weights.length > 0 ? weights : [0],
