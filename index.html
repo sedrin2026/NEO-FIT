@@ -45,28 +45,32 @@
                 </div>
             </section>
 
-            <!-- トレーニング記録入力エリア（UI統一） -->
+            <!-- トレーニング記録入力エリア -->
             <section class="card record-section">
                 <h2>WORKOUT LOG</h2>
                 <form id="workout-form" onsubmit="saveWorkout(event)">
                     <div class="form-group">
                         <label>部位:</label>
-                        <select id="part-select">
-                            <option value="胸 (Chest)">胸 (Chest)</option>
-                            <option value="背中 (Back)">背中 (Back)</option>
-                            <option value="脚 (Legs)">脚 (Legs)</option>
-                            <option value="肩 (Shoulder)">肩 (Shoulder)</option>
-                            <option value="腕 (Arms)">腕 (Arms)</option>
-                        </select>
+                        <div class="select-wrapper">
+                            <select id="part-select">
+                                <option value="胸 (Chest)">胸 (Chest)</option>
+                                <option value="背中 (Back)">背中 (Back)</option>
+                                <option value="脚 (Legs)">脚 (Legs)</option>
+                                <option value="肩 (Shoulder)">肩 (Shoulder)</option>
+                                <option value="腕 (Arms)">腕 (Arms)</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>種目:</label>
-                        <select id="exercise-select">
-                            <option value="ベンチプレス">ベンチプレス</option>
-                            <option value="スクワット">スクワット</option>
-                            <option value="デッドリフト">デッドリフト</option>
-                            <option value="ショルダープレス">ショルダープレス</option>
-                        </select>
+                        <div class="select-wrapper">
+                            <select id="exercise-select">
+                                <option value="ベンチプレス">ベンチプレス</option>
+                                <option value="スクワット">スクワット</option>
+                                <option value="デッドリフト">デッドリフト</option>
+                                <option value="ショルダープレス">ショルダープレス</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
@@ -99,16 +103,18 @@
         <section id="guide-section" class="card" style="display:none;">
             <h2 id="guide-title">LEVEL GUIDE</h2>
             
-            <!-- 身体データ入力フォーム（自動保存対応・毎回リアルタイム計算） -->
+            <!-- 身体データ入力フォーム -->
             <div class="card" style="background: rgba(0,0,0,0.3); border-color: #38bdf8;">
                 <h3 style="color:#38bdf8; font-size:0.85rem; margin-bottom:10px;">// 身体データ・個体差入力</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label>性別:</label>
-                        <select id="user-gender" onchange="calculatePersonalMenu()">
-                            <option value="male">男性</option>
-                            <option value="female">女性</option>
-                        </select>
+                        <div class="select-wrapper">
+                            <select id="user-gender" onchange="calculatePersonalMenu()">
+                                <option value="male">男性</option>
+                                <option value="female">女性</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>年齢:</label>
