@@ -1,6 +1,5 @@
 let currentLevelGlobal = 'BEGINNER';
 
-// 起動時に保存された身体データを復元
 window.onload = function() {
     loadUserData();
     updateChart();
@@ -30,7 +29,6 @@ function saveUserDataToStorage() {
     localStorage.setItem('neo_fit_user_profile', JSON.stringify(userProfile));
 }
 
-// レベルガイド表示
 function showLevelGuide(level) {
     currentLevelGlobal = level;
     document.getElementById('guide-title').innerText = `${level} PROGRAM // パーソナル診断`;
@@ -52,9 +50,8 @@ function hideGuide() {
     document.getElementById('main-content').style.display = 'block';
 }
 
-// 毎回リアルタイムに計算し、自動保存＆動的アドバイス・プロテイン・画像を生成
 function calculatePersonalMenu() {
-    saveUserDataToStorage(); // 自動保存
+    saveUserDataToStorage();
 
     const gender = document.getElementById('user-gender').value;
     const age = Number(document.getElementById('user-age').value);
@@ -70,7 +67,7 @@ function calculatePersonalMenu() {
 
     let contentHtml = `
         <div class="card" style="margin-top:15px; border-color:#00f2ff;">
-            <h3 style="color:#00f2ff; font-size:0.9rem; margin-bottom:8px;">📊 リアルタイム・パーソナル分析</h3>
+            <h3 style="color:#00f2ff; font-size:0.9rem; margin-bottom:8px;">📊 リアルタイム・パーソナル診断</h3>
             <p style="font-size:0.85rem; color:#e2e8f0;">BMI: <strong>${bmi}</strong> (${bmiStatus})</p>
             <p style="font-size:0.85rem; color:#e2e8f0;">血圧コンディション: <strong>${bp}</strong></p>
     `;
@@ -83,8 +80,8 @@ function calculatePersonalMenu() {
             <p style="color:#38bdf8; font-weight:bold; font-size:0.85rem;">【初心者向け基礎メニュー提案】</p>
             <ul style="font-size:0.85rem; color:#e2e8f0; padding-left:18px; margin-top:8px; line-height:1.5;">
                 <li><strong>ベンチプレス(目安):</strong> 約 ${estBench} kg からスタート (10回×3セット)</li>
-                <li><strong>フォーム画像部位解説:</strong> 肘の角度を75度に保ち、胸のストレッチを意識。</li>
-                <li><strong>アドバイス:</strong> 数値の変化に応じて負荷が自動再計算されます。</li>
+                <li><strong>フォーム解説:</strong> 肘の角度を75度に保ち、胸のストレッチを意識。</li>
+                <li><strong>アドバイス:</strong> 身体データを変更するとリアルタイムで数値が再計算されます。</li>
             </ul>
         `;
     } else if (currentLevelGlobal === 'INTERMEDIATE') {
@@ -97,8 +94,8 @@ function calculatePersonalMenu() {
             <p style="font-size:0.85rem; color:#cbd5e1; margin-top:5px;">現在最高記録: <strong>${maxWeight}kg</strong> ➔ 次回目標: <strong>${targetBench}kg</strong></p>
             <ul style="font-size:0.85rem; color:#e2e8f0; padding-left:18px; margin-top:8px; line-height:1.5;">
                 <li><strong>部位別アプローチ:</strong> 胸のトレーニングに加え、背中（広背筋）の安定性を高めると記録更新しやすいです。</li>
-                <li><strong>推奨プロテイン:</strong> ホエイプロテイン（WPI製質）</li>
-                <li><strong>摂取量・詳細:</strong> 1日あたり約 <strong>${proteinGrams}g</strong>（体重×1.8g）。トレーニング後45分以内と就寝前 30gずつに分けて摂取してください。</li>
+                <li><strong>推奨プロテイン:</strong> ホエイプロテイン（WPI製法） - 吸収が早く胃に負担がかかりにくい高品質タイプ。</li>
+                <li><strong>摂取量・詳細:</strong> 1日あたり約 <strong>${proteinGrams}g</strong>（体重×1.8g）。トレーニング後45分以内と就寝前 30gずつに分けて摂取。</li>
             </ul>
         `;
     } else {
@@ -111,8 +108,8 @@ function calculatePersonalMenu() {
             <p style="font-size:0.85rem; color:#cbd5e1; margin-top:5px;">最高記録 ${maxWeight}kg ｜ セッション目標トネイジ: <strong>${tonnageTarget}kg</strong></p>
             <ul style="font-size:0.85rem; color:#e2e8f0; padding-left:18px; margin-top:8px; line-height:1.5;">
                 <li><strong>部位別アドバイス:</strong> RPE 9の維持とネガティブ動作の徹底。マンネリ防止にアイソメトリック種目を追加。</li>
-                <li><strong>推奨プロテイン:</strong> グルタミン配合ホエイアイソレート ＋ クレアチン併用</li>
-                <li><strong>摂取量・詳細:</strong> 高強度トレーニングに対応するため 1日 <strong>${proteinGramsAdv}g</strong>（体重×2.2g）。BCAAをトレーニング中こまめに摂取し筋分解を抑制。</li>
+                <li><strong>推奨プロテイン:</strong> グルタミン配合ホエイアイソレート ＋ クレアチンモノハイドレート併用。</li>
+                <li><strong>摂取量・詳細:</strong> 高強度セッションに対応するため 1日 <strong>${proteinGramsAdv}g</strong>（体重×2.2g）。BCAAをワークショップ中こまめに摂取し筋分解を完全抑制。</li>
             </ul>
         `;
     }
@@ -121,7 +118,6 @@ function calculatePersonalMenu() {
     document.getElementById('guide-content').innerHTML = contentHtml;
 }
 
-// タイマー機能
 let timerInterval;
 function startTimer(seconds) {
     clearInterval(timerInterval);
@@ -146,7 +142,6 @@ function resetTimer() {
     document.getElementById('timer-display').innerText = "00:60";
 }
 
-// 記録保存とローカルストレージ
 let workoutData = JSON.parse(localStorage.getItem('neo_fit_logs')) || [];
 
 function saveWorkout(e) {
@@ -166,7 +161,6 @@ function saveWorkout(e) {
     updateChart();
 }
 
-// グラフ描画
 let myChart;
 function updateChart() {
     const canvas = document.getElementById('progressChart');
