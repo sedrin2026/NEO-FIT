@@ -1,15 +1,13 @@
-/* ダーク＆ネオンのリセット */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Rajdhani', 'Segoe UI', sans-serif; /* 近未来っぽいフォント */
+    font-family: 'Rajdhani', 'Segoe UI', sans-serif;
 }
 
 body {
     background: #05070a;
-    background-image: 
-        radial-gradient(circle at 50% 50%, #101826 0%, #05070a 100%);
+    background-image: radial-gradient(circle at 50% 50%, #101826 0%, #05070a 100%);
     color: #00f2ff;
     padding: 15px;
     min-height: 100vh;
@@ -17,64 +15,157 @@ body {
 
 header {
     text-align: center;
-    padding: 20px 0;
+    padding: 15px 0;
     border-bottom: 2px solid #00f2ff;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     text-transform: uppercase;
 }
 
-h1 { font-size: 2rem; letter-spacing: 5px; text-shadow: 0 0 15px #00f2ff; }
+h1 { font-size: 1.8rem; letter-spacing: 4px; text-shadow: 0 0 15px #00f2ff; }
+header p { font-size: 0.75rem; color: #8b9bb4; }
 
-/* 近未来的なカードデザイン */
+/* カード（角丸化） */
 .card {
-    background: rgba(16, 24, 38, 0.7);
+    background: rgba(16, 24, 38, 0.75);
     border: 1px solid rgba(0, 242, 255, 0.3);
-    backdrop-filter: blur(10px); /* ぼかし効果 */
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 0; /* 角を尖らせる */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 12px; /* 角丸 */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 h2 {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #fff;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     letter-spacing: 2px;
     border-left: 3px solid #00f2ff;
-    padding-left: 10px;
+    padding-left: 8px;
 }
 
-/* ボタンをかっこよく */
-button {
-    background: transparent;
-    border: 1px solid #00f2ff;
-    color: #00f2ff;
-    padding: 10px 15px;
+/* ボタン（角丸・バランス配置） */
+.level-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.level-row {
+    display: flex;
+    gap: 8px;
+}
+
+.lvl-btn {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+    padding: 12px 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-radius: 8px; /* 角丸 */
     cursor: pointer;
-    text-transform: uppercase;
-    transition: 0.3s;
+    transition: 0.2s;
+    text-align: center;
 }
 
-button:hover, .lvl-btn.active {
-    background: #00f2ff;
-    color: #05070a;
-    box-shadow: 0 0 15px #00f2ff;
-}
-
-/* セレクトボックスもSF風に */
-select, input {
-    background: #0a0e14;
-    border: 1px solid #00f2ff;
-    color: #00f2ff;
-    padding: 10px;
+.full-btn {
     width: 100%;
 }
 
+.lvl-btn:hover {
+    background: #38bdf8;
+    color: #05070a;
+    box-shadow: 0 0 12px #38bdf8;
+}
+
+.sub-txt {
+    display: block;
+    font-size: 0.7rem;
+    color: #94a3b8;
+}
+
+/* タイマー（白の蛍光色発光） */
 #timer-display {
-    font-size: 3rem;
+    font-size: 2.8rem;
     text-align: center;
     font-family: 'Courier New', monospace;
-    text-shadow: 0 0 20px #ff0055;
-    color: #ff0055;
+    color: #ffffff;
+    text-shadow: 0 0 10px #ffffff, 0 0 20px #00f2ff, 0 0 30px #00f2ff;
+    margin-bottom: 10px;
+}
+
+.timer-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.timer-controls button {
+    flex: 1;
+    background: #1e293b;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    padding: 8px;
+    border-radius: 8px; /* 角丸 */
+    font-weight: bold;
+}
+
+/* フォーム部品 */
+.form-group {
+    margin-bottom: 10px;
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-bottom: 4px;
+}
+
+.form-group select, .form-group input[type="text"], .form-group input[type="number"] {
+    width: 100%;
+    background: #090d16;
+    border: 1px solid #334155;
+    color: #00f2ff;
+    padding: 8px;
+    border-radius: 8px; /* 角丸 */
+    font-size: 0.85rem;
+}
+
+/* スライダースリム方式 */
+input[type="range"] {
+    width: 100%;
+    accent-color: #00f2ff;
+    background: #090d16;
+    height: 6px;
+    border-radius: 3px;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    width: 100%;
+    background: linear-gradient(90deg, #00f2ff, #3b82f6);
+    border: none;
+    color: #05070b;
+    padding: 12px;
+    font-weight: bold;
+    border-radius: 8px; /* 角丸 */
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.4);
+}
+
+.action-btn:hover {
+    opacity: 0.9;
+}
+
+.chart-container {
+    position: relative;
+    height: 180px;
+    width: 100%;
 }
