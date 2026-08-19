@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEO-FIT | 近未来トレーニング</title>
     <link rel="stylesheet" href="style.css">
-    <!-- グラフ描画用のChart.jsライブラリ -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -15,19 +14,27 @@
             <p>SYSTEM ACTIVE // CYBER FIT</p>
         </header>
 
-        <!-- メインコンテンツ（ホーム画面） -->
+        <!-- メイン画面 -->
         <div id="main-content">
-            <!-- レベル選択エリア -->
+            <!-- レベル選択エリア（上：初心者、下：中級・上級） -->
             <section class="card level-selector">
                 <h2>SELECT LEVEL</h2>
-                <div class="level-buttons">
-                    <button class="lvl-btn" onclick="showLevelGuide('BEGINNER')">BEGINNER<br><span class="sub-txt">(初心者)</span></button>
-                    <button class="lvl-btn" onclick="showLevelGuide('INTERMEDIATE')">INTERMEDIATE<br><span class="sub-txt">(中級者)</span></button>
-                    <button class="lvl-btn" onclick="showLevelGuide('ADVANCED')">ADVANCED<br><span class="sub-txt">(上級者)</span></button>
+                <div class="level-layout">
+                    <button class="lvl-btn full-btn" onclick="showLevelGuide('BEGINNER')">
+                        BEGINNER <span class="sub-txt">(初心者)</span>
+                    </button>
+                    <div class="level-row">
+                        <button class="lvl-btn" onclick="showLevelGuide('INTERMEDIATE')">
+                            INTERMEDIATE <span class="sub-txt">(中級者)</span>
+                        </button>
+                        <button class="lvl-btn" onclick="showLevelGuide('ADVANCED')">
+                            ADVANCED <span class="sub-txt">(上級者)</span>
+                        </button>
+                    </div>
                 </div>
             </section>
 
-            <!-- タイマー機能エリア -->
+            <!-- タイマー機能エリア（白蛍光色） -->
             <section class="card timer-section">
                 <h2>INTERVAL TIMER</h2>
                 <div id="timer-display">00:60</div>
@@ -38,7 +45,7 @@
                 </div>
             </section>
 
-            <!-- トレーニング記録入力エリア -->
+            <!-- トレーニング記録入力エリア（縦型スリムスライド式） -->
             <section class="card record-section">
                 <h2>WORKOUT LOG</h2>
                 <form id="workout-form" onsubmit="saveWorkout(event)">
@@ -63,24 +70,12 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>重量 (kg):</label>
-                            <select id="weight-select">
-                                <script>
-                                    for(let i=20; i<=150; i+=5) {
-                                        document.write(`<option value="${i}">${i} kg</option>`);
-                                    }
-                                </script>
-                            </select>
+                            <label>重量 (kg): [ <span id="weight-val">50</span> kg ]</label>
+                            <input type="range" id="weight-slider" min="10" max="150" step="5" value="50" oninput="document.getElementById('weight-val').innerText=this.value">
                         </div>
                         <div class="form-group">
-                            <label>回数 (Rep):</label>
-                            <select id="rep-select">
-                                <script>
-                                    for(let i=1; i<=30; i++) {
-                                        document.write(`<option value="${i}">${i} reps</option>`);
-                                    }
-                                </script>
-                            </select>
+                            <label>回数 (Rep): [ <span id="rep-val">10</span> reps ]</label>
+                            <input type="range" id="rep-slider" min="1" max="30" step="1" value="10" oninput="document.getElementById('rep-val').innerText=this.value">
                         </div>
                     </div>
                     <div class="form-group">
@@ -100,12 +95,54 @@
             </section>
         </div>
 
-        <!-- レベル別ガイド表示エリア（初期は非表示） -->
+        <!-- レベル別パーソナル診断・ガイド画面（初期非表示） -->
         <section id="guide-section" class="card" style="display:none;">
-            <h2 id="guide-title">GUIDE</h2>
-            <div id="guide-content">
-                <!-- JSで画像とテキストが動的に挿入されます -->
+            <h2 id="guide-title">LEVEL GUIDE</h2>
+            
+            <!-- 身体データ入力フォーム -->
+            <div class="card" style="background: rgba(0,0,0,0.3); border-color: #38bdf8;">
+                <h3 style="color:#38bdf8; font-size:0.85rem; margin-bottom:10px;">// 身体データ・個体差入力</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>性別:</label>
+                        <select id="user-gender">
+                            <option value="male">男性</option>
+                            <option value="female">女性</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>年齢:</label>
+                        <input type="number" id="user-age" value="25" min="10" max="100">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>身長 (cm):</label>
+                        <input type="number" id="user-height" value="170" min="100" max="220">
+                    </div>
+                    <div class="form-group">
+                        <label>体重 (kg):</label>
+                        <input type="number" id="user-weight" value="65" min="30" max="200">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>血圧 (例: 120/80):</label>
+                        <input type="text" id="user-bp" value="120/80">
+                    </div>
+                    <div class="form-group" id="max-weight-group">
+                        <label>ベンチ最高記録 (kg):</label>
+                        <input type="number" id="user-max-weight" value="60" min="0" max="250">
+                    </div>
+                </div>
+                <button onclick="calculatePersonalMenu()" class="action-btn" style="margin-top:10px;">AI分析＆メニュー生成</button>
             </div>
+
+            <!-- 分析結果・メニュー表示エリア -->
+            <div id="guide-content">
+                <!-- JSで動的生成 -->
+            </div>
+            
             <button onclick="hideGuide()" class="action-btn" style="margin-top:15px;">ホームに戻る</button>
         </section>
     </div>
