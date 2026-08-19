@@ -1,11 +1,40 @@
 let currentLevelGlobal = 'BEGINNER';
 
-// レベルガイド画面の表示
+// 起動時に保存された身体データを復元
+window.onload = function() {
+    loadUserData();
+    updateChart();
+};
+
+function loadUserData() {
+    const savedUser = JSON.parse(localStorage.getItem('neo_fit_user_profile'));
+    if (savedUser) {
+        document.getElementById('user-gender').value = savedUser.gender || 'male';
+        document.getElementById('user-age').value = savedUser.age || 25;
+        document.getElementById('user-height').value = savedUser.height || 170;
+        document.getElementById('user-weight').value = savedUser.weight || 65;
+        document.getElementById('user-bp').value = savedUser.bp || '120/80';
+        document.getElementById('user-max-weight').value = savedUser.maxWeight || 60;
+    }
+}
+
+function saveUserDataToStorage() {
+    const userProfile = {
+        gender: document.getElementById('user-gender').value,
+        age: document.getElementById('user-age').value,
+        height: document.getElementById('user-height').value,
+        weight: document.getElementById('user-weight').value,
+        bp: document.getElementById('user-bp').value,
+        maxWeight: document.getElementById('user-max-weight').value
+    };
+    localStorage.setItem('neo_fit_user_profile', JSON.stringify(userProfile));
+}
+
+// レベルガイド表示
 function showLevelGuide(level) {
     currentLevelGlobal = level;
     document.getElementById('guide-title').innerText = `${level} PROGRAM // パーソナル診断`;
     
-    // 上級者以外は最高記録入力を隠すなどの調整も可能
     if(level === 'BEGINNER') {
         document.getElementById('max-weight-group').style.display = 'none';
     } else {
@@ -15,7 +44,6 @@ function showLevelGuide(level) {
     document.getElementById('main-content').style.display = 'none';
     document.getElementById('guide-section').style.display = 'block';
     
-    // 初回自動計算を実行
     calculatePersonalMenu();
 }
 
@@ -24,62 +52,67 @@ function hideGuide() {
     document.getElementById('main-content').style.display = 'block';
 }
 
-// 身体データからBMI・適正数値を算出し、レベル別に提案を行う
+// 毎回リアルタイムに計算し、自動保存＆動的アドバイス・プロテイン・画像を生成
 function calculatePersonalMenu() {
+    saveUserDataToStorage(); // 自動保存
+
     const gender = document.getElementById('user-gender').value;
     const age = Number(document.getElementById('user-age').value);
-    const height = Number(document.getElementById('user-height').value) / 100; // m変換
+    const height = Number(document.getElementById('user-height').value) / 100;
     const weight = Number(document.getElementById('user-weight').value);
     const bp = document.getElementById('user-bp').value;
     const maxWeight = Number(document.getElementById('user-max-weight').value) || 0;
 
-    // BMI計算
     const bmi = (weight / (height * height)).toFixed(1);
     let bmiStatus = "標準";
     if (bmi < 18.5) bmiStatus = "低体重（痩せ型） - 栄養と筋肥大ボリュームが必要";
-    else if (bmi >= 25) bmiStatus = "肥満気味 - 有酸素運動とカロリー管理を並行推奨";
+    else if (bmi >= 25) bmiStatus = "肥満気味 - 有酸素運動と代謝向上の併用推奨";
 
     let contentHtml = `
         <div class="card" style="margin-top:15px; border-color:#00f2ff;">
-            <h3 style="color:#00f2ff; font-size:0.9rem; margin-bottom:8px;">📊 パーソナル分析結果</h3>
+            <h3 style="color:#00f2ff; font-size:0.9rem; margin-bottom:8px;">📊 リアルタイム・パーソナル分析</h3>
             <p style="font-size:0.85rem; color:#e2e8f0;">BMI: <strong>${bmi}</strong> (${bmiStatus})</p>
-            <p style="font-size:0.85rem; color:#e2e8f0;">血圧状態: <strong>${bp}</strong> (安定)</p>
+            <p style="font-size:0.85rem; color:#e2e8f0;">血圧コンディション: <strong>${bp}</strong></p>
     `;
 
     if (currentLevelGlobal === 'BEGINNER') {
         const estBench = (weight * 0.6).toFixed(1);
         contentHtml += `
             <hr style="border-color:#1e293b; margin:10px 0;">
-            <p style="color:#38bdf8; font-weight:bold; font-size:0.85rem;">【初心者向け最適メニュー提案】</p>
-            <p style="font-size:0.85rem; color:#cbd5e1; margin-top:5px;">あなたの体重(${weight}kg)に基づき、まずは安全に基礎筋力をつけるメニューです。</p>
+            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80" alt="Beginner Form" style="width:100%; border-radius:8px; margin:10px 0; border:1px solid #00f2ff;">
+            <p style="color:#38bdf8; font-weight:bold; font-size:0.85rem;">【初心者向け基礎メニュー提案】</p>
             <ul style="font-size:0.85rem; color:#e2e8f0; padding-left:18px; margin-top:8px; line-height:1.5;">
-                <li><strong>ベンチプレス(目安):</strong> 約 ${estBench} kg からフォーム固め (10回×3セット)</li>
-                <li><strong>自重スクワット:</strong> 15回 × 3セット (膝がつま先より出ないよう意識)</li>
-                <li><strong>アドバイス:</strong> 血圧に負荷をかけすぎないよう、呼吸を止めずに行いましょう。</li>
+                <li><strong>ベンチプレス(目安):</strong> 約 ${estBench} kg からスタート (10回×3セット)</li>
+                <li><strong>フォーム画像部位解説:</strong> 肘の角度を75度に保ち、胸のストレッチを意識。</li>
+                <li><strong>アドバイス:</strong> 数値の変化に応じて負荷が自動再計算されます。</li>
             </ul>
         `;
     } else if (currentLevelGlobal === 'INTERMEDIATE') {
         const targetBench = (maxWeight * 1.05).toFixed(1);
+        const proteinGrams = (weight * 1.8).toFixed(0);
         contentHtml += `
             <hr style="border-color:#1e293b; margin:10px 0;">
-            <p style="color:#38bdf8; font-weight:bold; font-size:0.85rem;">【中級者向け記録更新アドバイス】</p>
-            <p style="font-size:0.85rem; color:#cbd5e1; margin-top:5px;">現在入力されたベンチプレス最高記録: <strong>${maxWeight}kg</strong></p>
+            <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=600&q=80" alt="Intermediate Training" style="width:100%; border-radius:8px; margin:10px 0; border:1px solid #00f2ff;">
+            <p style="color:#38bdf8; font-weight:bold; font-size:0.85rem;">【中級者向け記録更新 & 栄養アドバイス】</p>
+            <p style="font-size:0.85rem; color:#cbd5e1; margin-top:5px;">現在最高記録: <strong>${maxWeight}kg</strong> ➔ 次回目標: <strong>${targetBench}kg</strong></p>
             <ul style="font-size:0.85rem; color:#e2e8f0; padding-left:18px; margin-top:8px; line-height:1.5;">
-                <li><strong>次回の目標重量:</strong> ${targetBench} kg （+2.5kgのオーバーロード）</li>
-                <li><strong>推奨アプローチ:</strong> メインセットの前に背中（広背筋）の安定性を高めると、挙上重量が伸びやすくなります。</li>
-                <li><strong>分割法提案:</strong> 胸と三頭筋のコンビネーションセッションを週2回に設定してください。</li>
+                <li><strong>部位別アプローチ:</strong> 胸のトレーニングに加え、背中（広背筋）の安定性を高めると記録更新しやすいです。</li>
+                <li><strong>推奨プロテイン:</strong> ホエイプロテイン（WPI製質）</li>
+                <li><strong>摂取量・詳細:</strong> 1日あたり約 <strong>${proteinGrams}g</strong>（体重×1.8g）。トレーニング後45分以内と就寝前 30gずつに分けて摂取してください。</li>
             </ul>
         `;
     } else {
         const tonnageTarget = (maxWeight * 20).toFixed(0);
+        const proteinGramsAdv = (weight * 2.2).toFixed(0);
         contentHtml += `
             <hr style="border-color:#1e293b; margin:10px 0;">
-            <p style="color:#38bdf8; font-weight:bold; font-size:0.85rem;">【上級者向け極限ボリューム・RPE管理】</p>
-            <p style="font-size:0.85rem; color:#cbd5e1; margin-top:5px;">最高記録 ${maxWeight}kg をベースにした神経系・筋肥大の最適化プラン。</p>
+            <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80" alt="Advanced Training" style="width:100%; border-radius:8px; margin:10px 0; border:1px solid #00f2ff;">
+            <p style="color:#38bdf8; font-weight:bold; font-size:0.85rem;">【上級者向け極限ボリューム & 栄養管理】</p>
+            <p style="font-size:0.85rem; color:#cbd5e1; margin-top:5px;">最高記録 ${maxWeight}kg ｜ セッション目標トネイジ: <strong>${tonnageTarget}kg</strong></p>
             <ul style="font-size:0.85rem; color:#e2e8f0; padding-left:18px; margin-top:8px; line-height:1.5;">
-                <li><strong>セッション目標トネイジ:</strong> ${tonnageTarget} kg 以上をターゲットに設定。</li>
-                <li><strong>RPE 9 厳守:</strong> 失敗リスクを排除しつつ、ネガティブ動作を4秒かけるスロードリルを追加。</li>
-                <li><strong>アドバイス:</strong> 神経疲労が溜まりやすいため、睡眠とクエン酸の摂取量を増やすことを推奨します。</li>
+                <li><strong>部位別アドバイス:</strong> RPE 9の維持とネガティブ動作の徹底。マンネリ防止にアイソメトリック種目を追加。</li>
+                <li><strong>推奨プロテイン:</strong> グルタミン配合ホエイアイソレート ＋ クレアチン併用</li>
+                <li><strong>摂取量・詳細:</strong> 高強度トレーニングに対応するため 1日 <strong>${proteinGramsAdv}g</strong>（体重×2.2g）。BCAAをトレーニング中こまめに摂取し筋分解を抑制。</li>
             </ul>
         `;
     }
@@ -88,7 +121,7 @@ function calculatePersonalMenu() {
     document.getElementById('guide-content').innerHTML = contentHtml;
 }
 
-// タイマー機能（白蛍光色）
+// タイマー機能
 let timerInterval;
 function startTimer(seconds) {
     clearInterval(timerInterval);
@@ -177,7 +210,3 @@ function updateChart() {
         }
     });
 }
-
-window.onload = function() {
-    updateChart();
-};
