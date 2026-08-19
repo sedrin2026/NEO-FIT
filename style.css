@@ -118,7 +118,6 @@ h2 {
     margin-bottom: 4px;
 }
 
-/* プルダウンメニュー（セレクトボックス）の近未来風カスタム */
 .select-wrapper {
     position: relative;
     width: 100%;
@@ -146,7 +145,7 @@ h2 {
     border-radius: 8px;
     font-size: 0.85rem;
     outline: none;
-    appearance: none; /* 標準の矢印を消す */
+    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     transition: 0.2s;
