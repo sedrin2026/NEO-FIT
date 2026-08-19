@@ -24,14 +24,13 @@ header {
 h1 { font-size: 1.8rem; letter-spacing: 4px; text-shadow: 0 0 15px #00f2ff; }
 header p { font-size: 0.75rem; color: #8b9bb4; }
 
-/* カード（角丸化） */
 .card {
     background: rgba(16, 24, 38, 0.75);
     border: 1px solid rgba(0, 242, 255, 0.3);
     backdrop-filter: blur(10px);
     padding: 15px;
     margin-bottom: 15px;
-    border-radius: 12px; /* 角丸 */
+    border-radius: 12px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
@@ -44,7 +43,6 @@ h2 {
     padding-left: 8px;
 }
 
-/* ボタン（角丸・バランス配置） */
 .level-layout {
     display: flex;
     flex-direction: column;
@@ -63,15 +61,13 @@ h2 {
     padding: 12px 10px;
     font-size: 0.8rem;
     font-weight: bold;
-    border-radius: 8px; /* 角丸 */
+    border-radius: 8px;
     cursor: pointer;
     transition: 0.2s;
     text-align: center;
 }
 
-.full-btn {
-    width: 100%;
-}
+.full-btn { width: 100%; }
 
 .lvl-btn:hover {
     background: #38bdf8;
@@ -85,7 +81,6 @@ h2 {
     color: #94a3b8;
 }
 
-/* タイマー（白の蛍光色発光） */
 #timer-display {
     font-size: 2.8rem;
     text-align: center;
@@ -106,11 +101,12 @@ h2 {
     border: 1px solid #ffffff;
     color: #ffffff;
     padding: 8px;
-    border-radius: 8px; /* 角丸 */
+    border-radius: 8px;
     font-weight: bold;
+    cursor: pointer;
 }
 
-/* フォーム部品 */
+/* UIを統一したセレクト・インプット・スライダー */
 .form-group {
     margin-bottom: 10px;
     flex: 1;
@@ -123,23 +119,35 @@ h2 {
     margin-bottom: 4px;
 }
 
-.form-group select, .form-group input[type="text"], .form-group input[type="number"] {
+.form-group select, 
+.form-group input[type="text"], 
+.form-group input[type="number"] {
     width: 100%;
     background: #090d16;
-    border: 1px solid #334155;
+    border: 1px solid #00f2ff55;
     color: #00f2ff;
-    padding: 8px;
-    border-radius: 8px; /* 角丸 */
+    padding: 9px;
+    border-radius: 8px;
     font-size: 0.85rem;
+    outline: none;
+    transition: 0.2s;
 }
 
-/* スライダースリム方式 */
+.form-group select:focus, 
+.form-group input:focus {
+    border-color: #00f2ff;
+    box-shadow: 0 0 8px rgba(0, 242, 255, 0.3);
+}
+
+/* スライダースリム方式（近未来風統一） */
 input[type="range"] {
     width: 100%;
     accent-color: #00f2ff;
     background: #090d16;
     height: 6px;
     border-radius: 3px;
+    outline: none;
+    margin-top: 8px;
 }
 
 .form-row {
@@ -154,15 +162,13 @@ input[type="range"] {
     color: #05070b;
     padding: 12px;
     font-weight: bold;
-    border-radius: 8px; /* 角丸 */
+    border-radius: 8px;
     font-size: 0.9rem;
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0, 242, 255, 0.4);
 }
 
-.action-btn:hover {
-    opacity: 0.9;
-}
+.action-btn:hover { opacity: 0.9; }
 
 .chart-container {
     position: relative;
