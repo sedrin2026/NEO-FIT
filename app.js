@@ -1,9 +1,67 @@
+// レベル別ガイドのデータ（画像、推奨メニュー）
+const levelGuides = {
+    'BEGINNER': {
+        title: 'BEGINNER PROGRAM // 初心者向け基礎構築',
+        content: `
+            <div class="guide-card-inner">
+                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80" alt="Beginner Fitness" style="width:100%; border-radius:4px; margin-bottom:10px; border:1px solid #00f2ff;">
+                <p style="color:#00f2ff; font-weight:bold; margin-bottom:5px;">【目標】正しいフォームの習得と習慣化</p>
+                <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:8px;">まずは無理のない負荷で、関節や筋肉を動かす感覚を掴みましょう。</p>
+                <ul style="color:#e2e8f0; font-size:0.9rem; padding-left:20px; line-height:1.6;">
+                    <li><strong>自重スクワット:</strong> 15回 × 3セット (股関節の動きを意識)</li>
+                    <li><strong>膝つきプッシュアップ:</strong> 10回 × 3セット (胸の筋肉を意識)</li>
+                    <li><strong>プランク:</strong> 30秒 × 2セット (体幹の強化)</li>
+                </ul>
+            </div>
+        `
+    },
+    'INTERMEDIATE': {
+        title: 'INTERMEDIATE PROGRAM // 中級者向けボリューム最適化',
+        content: `
+            <div class="guide-card-inner">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=600&q=80" alt="Intermediate Fitness" style="width:100%; border-radius:4px; margin-bottom:10px; border:1px solid #00f2ff;">
+                <p style="color:#00f2ff; font-weight:bold; margin-bottom:5px;">【目標】オーバーロード（重量・回数の漸進性）の追求</p>
+                <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:8px;">前回の記録を少しずつ超えることで、効率的な筋肥大を狙います。</p>
+                <ul style="color:#e2e8f0; font-size:0.9rem; padding-left:20px; line-height:1.6;">
+                    <li><strong>ベンチプレス:</strong> 8回〜10回 × 3〜4セット (漸進的過負荷)</li>
+                    <li><strong>デッドリフト:</strong> 5回〜8回 × 3セット</li>
+                    <li><strong>ラットプルダウン:</strong> 10回 × 3セット</li>
+                </ul>
+            </div>
+        `
+    },
+    'ADVANCED': {
+        title: 'ADVANCED PROGRAM // 上級者向け高強度・極限管理',
+        content: `
+            <div class="guide-card-inner">
+                <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80" alt="Advanced Fitness" style="width:100%; border-radius:4px; margin-bottom:10px; border:1px solid #00f2ff;">
+                <p style="color:#00f2ff; font-weight:bold; margin-bottom:5px;">【目標】RPE管理と細かなボリューム（Tonnage）の最大化</p>
+                <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:8px;">神経系と筋群を極限まで追い込み、停滞期を打破するフェーズです。</p>
+                <ul style="color:#e2e8f0; font-size:0.9rem; padding-left:20px; line-height:1.6;">
+                    <li><strong>高強度分割法:</strong> プッシュ・プル・レッグス等による徹底した部位管理</li>
+                    <li><strong>RPE 8〜10:</strong> 限界手前〜完全限界のセットを厳密に記録</li>
+                    <li><strong>ピーキング:</strong> 1RMの更新に向けた重量調整</li>
+                </ul>
+            </div>
+        `
+    }
+};
 
-// レベル切り替え処理
-function setLevel(level) {
-    document.querySelectorAll('.lvl-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-    document.getElementById('current-level-text').innerText = `現在のモード: ${level}`;
+// レベルガイド画面の表示
+function showLevelGuide(level) {
+    const guide = levelGuides[level];
+    document.getElementById('guide-title').innerText = guide.title;
+    document.getElementById('guide-content').innerHTML = guide.content;
+    
+    // ホーム側のメインコンテンツを隠し、ガイド画面を表示
+    document.getElementById('main-content').style.display = 'none';
+    document.getElementById('guide-section').style.display = 'block';
+}
+
+// ホーム画面に戻る
+function hideGuide() {
+    document.getElementById('guide-section').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
 }
 
 // タイマー機能
@@ -55,9 +113,10 @@ function saveWorkout(e) {
 // グラフ描画（Chart.js）
 let myChart;
 function updateChart() {
-    const ctx = document.getElementById('progressChart').getContext('2d');
+    const canvas = document.getElementById('progressChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
     
-    // 最近の記録から最大5件の重量データを抽出
     const labels = workoutData.slice(-5).map(item => `${item.date} (${item.exercise})`);
     const weights = workoutData.slice(-5).map(item => item.weight);
 
@@ -72,7 +131,7 @@ function updateChart() {
             datasets: [{
                 label: '挙上重量 (kg)',
                 data: weights.length > 0 ? weights : [0],
-                backgroundColor: 'rgba(0, 242, 255, 0.5)',
+                backgroundColor: 'rgba(0, 242, 255, 0.4)',
                 borderColor: '#00f2ff',
                 borderWidth: 1
             }]
