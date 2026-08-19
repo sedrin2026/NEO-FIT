@@ -1,1 +1,150 @@
 
+body {
+    background-color: #05070b;
+    color: #00f2ff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 15px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.6);
+}
+
+header p {
+    margin: 5px 0 0;
+    font-size: 0.8rem;
+    color: #8b9bb4;
+}
+
+.card {
+    background: linear-gradient(135deg, #0f172a, #090d16);
+    border: 1px solid #00f2ff33;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.05);
+}
+
+.card h2 {
+    font-size: 1rem;
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #38bdf8;
+    border-bottom: 1px solid #1e293b;
+    padding-bottom: 5px;
+}
+
+/* レベルボタン */
+.level-buttons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.lvl-btn {
+    flex: 1;
+    background: #0f172a;
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+    padding: 10px 5px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.lvl-btn.active, .lvl-btn:hover {
+    background: #38bdf8;
+    color: #05070b;
+    box-shadow: 0 0 10px #38bdf8;
+}
+
+#current-level-text {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin: 0;
+    text-align: center;
+}
+
+/* タイマー */
+#timer-display {
+    font-size: 2.2rem;
+    text-align: center;
+    font-weight: bold;
+    color: #f43f5e;
+    text-shadow: 0 0 10px rgba(244, 63, 94, 0.5);
+    margin-bottom: 10px;
+}
+
+.timer-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.timer-controls button {
+    flex: 1;
+    background: #1e293b;
+    border: 1px solid #f43f5e;
+    color: #f43f5e;
+    padding: 8px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+/* フォーム要素 */
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-bottom: 4px;
+}
+
+.form-group select, .form-group input {
+    width: 100%;
+    background: #090d16;
+    border: 1px solid #334155;
+    color: #e2e8f0;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    width: 100%;
+    background: linear-gradient(90deg, #00f2ff, #3b82f6);
+    border: none;
+    color: #05070b;
+    padding: 12px;
+    font-weight: bold;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 5px;
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.4);
+}
+
+/* グラフエリア */
+.chart-container {
+    position: relative;
+    height: 200px;
+    width: 100%;
+}
