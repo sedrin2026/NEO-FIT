@@ -90,9 +90,36 @@
                 </form>
             </section>
 
-            <!-- グラフデータ表示エリア -->
+            <!-- グラフデータ表示エリア（部位・種目フィルター付き） -->
             <section class="card chart-section">
                 <h2>PROGRESS ANALYTICS</h2>
+                <div class="form-row" style="margin-bottom: 12px;">
+                    <div class="form-group">
+                        <label>表示フィルター（部位）:</label>
+                        <div class="select-wrapper">
+                            <select id="filter-part" onchange="updateChart()">
+                                <option value="ALL">すべての部位</option>
+                                <option value="胸 (Chest)">胸 (Chest)</option>
+                                <option value="背中 (Back)">背中 (Back)</option>
+                                <option value="脚 (Legs)">脚 (Legs)</option>
+                                <option value="肩 (Shoulder)">肩 (Shoulder)</option>
+                                <option value="腕 (Arms)">腕 (Arms)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>表示フィルター（種目）:</label>
+                        <div class="select-wrapper">
+                            <select id="filter-exercise" onchange="updateChart()">
+                                <option value="ALL">すべての種目</option>
+                                <option value="ベンチプレス">ベンチプレス</option>
+                                <option value="スクワット">スクワット</option>
+                                <option value="デッドリフト">デッドリフト</option>
+                                <option value="ショルダープレス">ショルダープレス</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="chart-container">
                     <canvas id="progressChart"></canvas>
                 </div>
@@ -103,7 +130,6 @@
         <section id="guide-section" class="card" style="display:none;">
             <h2 id="guide-title">LEVEL GUIDE</h2>
             
-            <!-- 身体データ入力フォーム -->
             <div class="card" style="background: rgba(0,0,0,0.3); border-color: #38bdf8;">
                 <h3 style="color:#38bdf8; font-size:0.85rem; margin-bottom:10px;">// 身体データ・個体差入力</h3>
                 <div class="form-row">
@@ -143,10 +169,7 @@
                 </div>
             </div>
 
-            <!-- 分析結果・メニュー・画像・プロテイン提案表示エリア -->
-            <div id="guide-content">
-                <!-- JSで動的生成 -->
-            </div>
+            <div id="guide-content"></div>
             
             <button onclick="hideGuide()" class="action-btn" style="margin-top:15px;">ホームに戻る</button>
         </section>
