@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEO-FIT | 近未来トレーニング</title>
     <link rel="stylesheet" href="style.css">
-    <!-- グラフ描画用のChart.jsライブラリをCDNで読み込み -->
+    <!-- グラフ描画用のChart.jsライブラリ -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -15,88 +15,98 @@
             <p>SYSTEM ACTIVE // CYBER FIT</p>
         </header>
 
-        <!-- レベル選択エリア -->
-        <section class="card level-selector">
-            <h2>SELECT LEVEL</h2>
-            <div class="level-buttons">
-                <button class="lvl-btn active" onclick="setLevel('BEGINNER')">BEGINNER</button>
-                <button class="lvl-btn" onclick="setLevel('INTERMEDIATE')">INTERMEDIATE</button>
-                <button class="lvl-btn" onclick="setLevel('ADVANCED')">ADVANCED</button>
-            </div>
-            <p id="current-level-text">現在のモード: BEGINNER</p>
-        </section>
-
-        <!-- タイマー機能エリア -->
-        <section class="card timer-section">
-            <h2>INTERVAL TIMER</h2>
-            <div id="timer-display">00:60</div>
-            <div class="timer-controls">
-                <button onclick="startTimer(60)">60秒</button>
-                <button onclick="startTimer(90)">90秒</button>
-                <button onclick="resetTimer()">リセット</button>
-            </div>
-        </section>
-
-        <!-- トレーニング記録入力エリア（プルダウン形式） -->
-        <section class="card record-section">
-            <h2>WORKOUT LOG</h2>
-            <form id="workout-form" onsubmit="saveWorkout(event)">
-                <div class="form-group">
-                    <label>部位:</label>
-                    <select id="part-select">
-                        <option value="胸 (Chest)">胸 (Chest)</option>
-                        <option value="背中 (Back)">背中 (Back)</option>
-                        <option value="脚 (Legs)">脚 (Legs)</option>
-                        <option value="肩 (Shoulder)">肩 (Shoulder)</option>
-                        <option value="腕 (Arms)">腕 (Arms)</option>
-                    </select>
+        <!-- メインコンテンツ（ホーム画面） -->
+        <div id="main-content">
+            <!-- レベル選択エリア -->
+            <section class="card level-selector">
+                <h2>SELECT LEVEL</h2>
+                <div class="level-buttons">
+                    <button class="lvl-btn" onclick="showLevelGuide('BEGINNER')">BEGINNER<br><span class="sub-txt">(初心者)</span></button>
+                    <button class="lvl-btn" onclick="showLevelGuide('INTERMEDIATE')">INTERMEDIATE<br><span class="sub-txt">(中級者)</span></button>
+                    <button class="lvl-btn" onclick="showLevelGuide('ADVANCED')">ADVANCED<br><span class="sub-txt">(上級者)</span></button>
                 </div>
-                <div class="form-group">
-                    <label>種目:</label>
-                    <select id="exercise-select">
-                        <option value="ベンチプレス">ベンチプレス</option>
-                        <option value="スクワット">スクワット</option>
-                        <option value="デッドリフト">デッドリフト</option>
-                        <option value="ショルダープレス">ショルダープレス</option>
-                    </select>
+            </section>
+
+            <!-- タイマー機能エリア -->
+            <section class="card timer-section">
+                <h2>INTERVAL TIMER</h2>
+                <div id="timer-display">00:60</div>
+                <div class="timer-controls">
+                    <button onclick="startTimer(60)">60秒</button>
+                    <button onclick="startTimer(90)">90秒</button>
+                    <button onclick="resetTimer()">リセット</button>
                 </div>
-                <div class="form-row">
+            </section>
+
+            <!-- トレーニング記録入力エリア -->
+            <section class="card record-section">
+                <h2>WORKOUT LOG</h2>
+                <form id="workout-form" onsubmit="saveWorkout(event)">
                     <div class="form-group">
-                        <label>重量 (kg):</label>
-                        <select id="weight-select">
-                            <!-- 20kg〜150kgまで選択肢を用意 -->
-                            <script>
-                                for(let i=20; i<=150; i+=5) {
-                                    document.write(`<option value="${i}">${i} kg</option>`);
-                                }
-                            </script>
+                        <label>部位:</label>
+                        <select id="part-select">
+                            <option value="胸 (Chest)">胸 (Chest)</option>
+                            <option value="背中 (Back)">背中 (Back)</option>
+                            <option value="脚 (Legs)">脚 (Legs)</option>
+                            <option value="肩 (Shoulder)">肩 (Shoulder)</option>
+                            <option value="腕 (Arms)">腕 (Arms)</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>回数 (Rep):</label>
-                        <select id="rep-select">
-                            <script>
-                                for(let i=1; i<=30; i++) {
-                                    document.write(`<option value="${i}">${i} reps</option>`);
-                                }
-                            </script>
+                        <label>種目:</label>
+                        <select id="exercise-select">
+                            <option value="ベンチプレス">ベンチプレス</option>
+                            <option value="スクワット">スクワット</option>
+                            <option value="デッドリフト">デッドリフト</option>
+                            <option value="ショルダープレス">ショルダープレス</option>
                         </select>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>備考メモ:</label>
-                    <input type="text" id="memo-input" placeholder="例: フォーム意識、調子良いなど">
-                </div>
-                <button type="submit" class="action-btn">記録を保存する</button>
-            </form>
-        </section>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>重量 (kg):</label>
+                            <select id="weight-select">
+                                <script>
+                                    for(let i=20; i<=150; i+=5) {
+                                        document.write(`<option value="${i}">${i} kg</option>`);
+                                    }
+                                </script>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>回数 (Rep):</label>
+                            <select id="rep-select">
+                                <script>
+                                    for(let i=1; i<=30; i++) {
+                                        document.write(`<option value="${i}">${i} reps</option>`);
+                                    }
+                                </script>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>備考メモ:</label>
+                        <input type="text" id="memo-input" placeholder="例: フォーム意識、調子良いなど">
+                    </div>
+                    <button type="submit" class="action-btn">記録を保存する</button>
+                </form>
+            </section>
 
-        <!-- グラフデータ表示エリア -->
-        <section class="card chart-section">
-            <h2>PROGRESS ANALYTICS</h2>
-            <div class="chart-container">
-                <canvas id="progressChart"></canvas>
+            <!-- グラフデータ表示エリア -->
+            <section class="card chart-section">
+                <h2>PROGRESS ANALYTICS</h2>
+                <div class="chart-container">
+                    <canvas id="progressChart"></canvas>
+                </div>
+            </section>
+        </div>
+
+        <!-- レベル別ガイド表示エリア（初期は非表示） -->
+        <section id="guide-section" class="card" style="display:none;">
+            <h2 id="guide-title">GUIDE</h2>
+            <div id="guide-content">
+                <!-- JSで画像とテキストが動的に挿入されます -->
             </div>
+            <button onclick="hideGuide()" class="action-btn" style="margin-top:15px;">ホームに戻る</button>
         </section>
     </div>
 
