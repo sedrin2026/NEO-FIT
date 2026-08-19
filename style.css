@@ -106,7 +106,6 @@ h2 {
     cursor: pointer;
 }
 
-/* UIを統一したセレクト・インプット・スライダー */
 .form-group {
     margin-bottom: 10px;
     flex: 1;
@@ -119,6 +118,23 @@ h2 {
     margin-bottom: 4px;
 }
 
+/* プルダウンメニュー（セレクトボックス）の近未来風カスタム */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-wrapper::after {
+    content: '▼';
+    font-size: 0.6rem;
+    color: #00f2ff;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
 .form-group select, 
 .form-group input[type="text"], 
 .form-group input[type="number"] {
@@ -126,11 +142,20 @@ h2 {
     background: #090d16;
     border: 1px solid #00f2ff55;
     color: #00f2ff;
-    padding: 9px;
+    padding: 9px 12px;
     border-radius: 8px;
     font-size: 0.85rem;
     outline: none;
+    appearance: none; /* 標準の矢印を消す */
+    -webkit-appearance: none;
+    -moz-appearance: none;
     transition: 0.2s;
+}
+
+.form-group select option {
+    background: #090d16;
+    color: #00f2ff;
+    padding: 10px;
 }
 
 .form-group select:focus, 
@@ -139,7 +164,6 @@ h2 {
     box-shadow: 0 0 8px rgba(0, 242, 255, 0.3);
 }
 
-/* スライダースリム方式（近未来風統一） */
 input[type="range"] {
     width: 100%;
     accent-color: #00f2ff;
